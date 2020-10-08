@@ -63,23 +63,6 @@ class VGG_net(nn.Module):
 
 		return nn.Sequential(*layers)
             
-        #The loop create_conv_layers is creating something similar to this:
-		#VGG's architecture
-		#in_channels = 224
-		#nn.Conv2d(in_channels=in_channels,out_channels=64,kernel_size=3,stride=1,padding=1)
-		#nn.Conv2d(in_channels=64,out_channels=64,kernel_size=3,stride=1,padding=1)
-		#nn.Conv2d(in_channels=64,out_channels=64,kernel_size=3,stride=1,padding=1)
-		#nn.ReLU()
-
-
-if __name__ == "__main__":
-
-    model = VGG_net(in_channels=3, num_classes=1000)
-    print(model)
-
-    x = torch.randn(3, 3, 224, 224)
-    print(model(x).shape)
-
 
 
 
