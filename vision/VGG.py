@@ -29,10 +29,11 @@ class VGG_net(nn.Module):
 		self.conv_layers = self.create_conv_layers(VGG_arch[vgg_type])
 		self.fc_layers = self.create_fc_layers()
 
-	def forward(self, input):
-		out = self.conv_layers(input)
-		out = out.reshape(x.shape[0],-1)# Flatten the conv output
+	def forward(self, x):
+		out = self.conv_layers(x)
+		out = out.reshape(out.shape[0],-1)# Flatten the conv output
 		out = self.fc_layers(out)
+		return out
 
 	def create_fc_layers(self):
 		#output from the convolutional has shape 512*7*7 after all the maxpools
