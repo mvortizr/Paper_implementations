@@ -1,11 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torch.utils.data import sampler
-import torchvision.datasets as dset
-import torchvision.transforms as T
-import numpy as np
 
 #References 
 #Using this hack https://www.youtube.com/watch?v=ACmuBbuXn20  because I am lazy and don't want to do each layer by itself
