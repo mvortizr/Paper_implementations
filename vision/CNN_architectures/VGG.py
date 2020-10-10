@@ -14,7 +14,7 @@ VGG_arch = {
 
 class VGG_net(nn.Module):
 	
-	def __init__(self, in_channels=3,num_classes=1000,vgg_type='D',output_conv_layers=512 * 7 * 7):
+	def __init__(self, in_channels=3,num_classes=1000,vgg_type='D',output_conv_layers=512 * 7 * 7,init_weights=True):
 		#Output from the convolutional has shape 512*7*7 after all the maxpools for ImageNet (3x224x224)
 		super(VGG_net,self).__init__()
 		
@@ -23,6 +23,8 @@ class VGG_net(nn.Module):
 		self.output_conv_layers=output_conv_layers
 		self.conv_layers = self.create_conv_layers(VGG_arch[vgg_type])
 		self.fc_layers = self.create_fc_layers()
+		if init_weights:
+            self._initialize_weights()
 
 	def forward(self, x):
 		out = self.conv_layers(x)
@@ -41,6 +43,19 @@ class VGG_net(nn.Module):
 			nn.Dropout(),
 			nn.Linear(4096,self.num_classes)
 		)
+
+	def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
 
 
 	def create_conv_layers(self,architecture):
