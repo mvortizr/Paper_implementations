@@ -14,12 +14,13 @@ VGG_arch = {
 
 class VGG_net(nn.Module):
 	
-	def __init__(self, in_channels=3,num_classes=1000,vgg_type='D'):
-		
+	def __init__(self, in_channels=3,num_classes=1000,vgg_type='D',output_conv_layers=512 * 7 * 7):
+		#Output from the convolutional has shape 512*7*7 after all the maxpools for ImageNet (3x224x224)
 		super(VGG_net,self).__init__()
 		
 		self.in_channels=in_channels
 		self.num_classes=num_classes
+		self.output_conv_layers=output_conv_layers
 		self.conv_layers = self.create_conv_layers(VGG_arch[vgg_type])
 		self.fc_layers = self.create_fc_layers()
 
@@ -30,9 +31,9 @@ class VGG_net(nn.Module):
 		return out
 
 	def create_fc_layers(self):
-		#output from the convolutional has shape 512*7*7 after all the maxpools
+		
 		return nn.Sequential(
-			nn.Linear(512 * 7 * 7,4096),
+			nn.Linear(self.output_conv_layers,4096),
 			nn.ReLU(inplace=True),
 			nn.Dropout(),
 			nn.Linear(4096,4096),
