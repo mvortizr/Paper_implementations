@@ -24,7 +24,7 @@ class VGG_net(nn.Module):
 		self.conv_layers = self.create_conv_layers(VGG_arch[vgg_type])
 		self.fc_layers = self.create_fc_layers()
 		if init_weights:
-            self._initialize_weights()
+        	self._initialize_weights()
 
 	def forward(self, x):
 		out = self.conv_layers(x)
